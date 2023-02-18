@@ -10,3 +10,5 @@ Created and admin user with multi factor authentication
 # Created an Event Bridge with SNS notification for Amazon Health Services
 ![Event Bridge](../_docs/assets/event-bridge.jpg)
 
+# Created Budget
+! [Budget](../_docs/assets/budget.jpg)
