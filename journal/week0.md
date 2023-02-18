@@ -11,4 +11,4 @@ Created and admin user with multi factor authentication
 ![Event Bridge](../_docs/assets/event-bridge.jpg)
 
 # Created Budget
-! [Budget](../_docs/assets/budget.jpg)
+![Budget](../_docs/assets/budget.jpg)
