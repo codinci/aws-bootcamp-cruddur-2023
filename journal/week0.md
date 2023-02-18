@@ -1,7 +1,7 @@
 # Week 0 — Billing and Architecture
 # Architectural Diagram
 This is an architectural diagram of the proposed application
-<img src="../_docs/assets/cloud-architectural-diagram.jpeg">
+<img src="../_docs/assets/cloud-architectural-diagram.jpg">
 
 # Create User and assign MFA
 Created and admin user with multi factor authentication
