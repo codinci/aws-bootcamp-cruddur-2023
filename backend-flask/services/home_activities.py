@@ -3,7 +3,8 @@ from opentelemetry import trace
 
 tracer = trace.get_tracer("home_activities_tracer")
 class HomeActivities:
-  def run():
+  def run(logger):
+    logger.info("home activities log")
     with tracer.start_as_current_span("run home_activities mock data"):
       span = trace.get_current_span()
       now = datetime.now(timezone.utc).astimezone()
