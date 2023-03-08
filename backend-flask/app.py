@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from flask import Flask
 from flask import request
 from flask_cors import CORS, cross_origin
@@ -55,6 +57,9 @@ import os
 import rollbar
 import rollbar.contrib.flask
 from flask import got_request_exception
+from flask import Request
+
+
 
 
 app = Flask(__name__)
@@ -95,17 +100,33 @@ cors = CORS(
   methods="OPTIONS,GET,HEAD,POST"
 )
 
+class CustomRequest(Request):
+    @property
+    def rollbar_person(self):
+        # 'id' is required, 'username' and 'email' are indexed but optional.
+        # all values are strings.
+        return {'id': '123', 'username': 'test', 'email': 'test@example.com'}
+
+app.request_class = CustomRequest
+
+#Endpoint to test rollbar
+@app.route('/rollbar/test')
+def rollbar_test():
+   rollbar.report_message('Hello World!', 'warning')
+   return 'Hello World'
+
+@app.route('/people/track')
+def hello():
+    print("in hello")
+    x = None
+    x[5]
+    return "Hello World!"
+
 @app.after_request
 def after_request(response):
     timestamp = strftime('[%Y-%b-%d %H:%M]')
     LOGGER.error('%s %s %s %s %s %s', timestamp, request.remote_addr, request.method, request.scheme, request.full_path, response.status)
     return response
-
-#Endpoint to test rollbar
-@app.route('/rollbar/test')
-def rollbar_test():
-    rollbar.report_message('Hello World!', 'warning')
-    return "Hello World!"
 
 @app.route("/api/message_groups", methods=['GET'])
 def data_message_groups():
@@ -146,6 +167,7 @@ def data_create_message():
 def data_home():
   data = HomeActivities.run(logger = LOGGER)
   return data, 200
+
 
 @app.route("/api/activities/notifications", methods=['GET'])
 def data_notifications():
@@ -199,6 +221,8 @@ def data_activities_reply(activity_uuid):
   else:
     return model['data'], 200
   return
+
+
 
 if __name__ == "__main__":
   app.run(debug=True)
