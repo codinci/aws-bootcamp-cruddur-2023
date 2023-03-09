@@ -22,24 +22,44 @@ export default function HomeFeedPage() {
   const [user, setUser] = React.useState(null);
   const dataFetchedRef = React.useRef(false);
 
-  const span = tracer.startActiveSpan('load_items', span => {
-    span.setAttribute('loading events', 'retrieving items')
-  })
-  const loadData = async () => {    
-    try {
-      const backend_url = `${process.env.REACT_APP_BACKEND_URL}/api/activities/home`
-      const res = await fetch(backend_url, {
-        method: "GET"
-      });
-      let resJson = await res.json();
-      if (res.status === 200) {
-        setActivities(resJson)
-      } else {
-        console.log(res)
+ 
+  const loadData = async () => {   
+    const backend_url = `${process.env.REACT_APP_BACKEND_URL}/api/activities/home` ;
+    return tracer.startActiveSpan(`Home Feed Request: Get ${backend_url}`, async (span) => {
+
+      const traceparent = `00-${span.spanContext().traceId}-${span.spanContext().spanId}-01`;
+      try {      
+        const res = await fetch(backend_url, {
+          method: "GET",
+          traceparent: traceparent,
+        });
+
+        // Set span attributes for http request
+        span.setAttributes({
+          'http.method': 'GET',
+          'http.url': backend_url,
+          'response.status_code': res.status,
+        });
+
+        let resJson = await res.json();
+        if (res.status === 200) {
+          // Set Span status for request status code
+          span.setStatus({ code: SpanStatusCode.OK });
+          setActivities(resJson)
+        } else {
+          console.log(res)
+        }
+      } catch (err) {
+        // Set Span for any error message
+        span.setStatus({
+          code: SpanStatusCode.ERROR,
+          message: err.message,
+        });
+        console.log(err);
+      } finally {
+        span.end();
       }
-    } catch (err) {
-      console.log(err);
-    }
+    })
   };
 
   const checkAuth = async () => {
