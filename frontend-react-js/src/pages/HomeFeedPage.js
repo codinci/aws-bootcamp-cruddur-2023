@@ -6,9 +6,10 @@ import DesktopSidebar     from '../components/DesktopSidebar';
 import ActivityFeed from '../components/ActivityFeed';
 import ActivityForm from '../components/ActivityForm';
 import ReplyForm from '../components/ReplyForm';
+import '../tracing';
 
 // Honeycomb Tracing
-import { trace, context, } from '@opentelemetry/api';
+import { trace, context, SpanStatusCode } from '@opentelemetry/api';
 const tracer = trace.getTracer();
 
 // [TODO] Authenication
@@ -27,7 +28,7 @@ export default function HomeFeedPage() {
     const backend_url = `${process.env.REACT_APP_BACKEND_URL}/api/activities/home` ;
     return tracer.startActiveSpan(`Home Feed Request: Get ${backend_url}`, async (span) => {
 
-      const traceparent = `00-${span.spanContext().traceId}-${span.spanContext().spanId}-01`;
+      const traceparent = `01-${span.spanContext().traceId}-${span.spanContext().spanId}-025`;
       try {      
         const res = await fetch(backend_url, {
           method: "GET",

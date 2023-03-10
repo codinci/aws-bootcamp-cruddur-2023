@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import './tracing.js';
 import reportWebVitals from './reportWebVitals';
 
 const el_main = document.getElementsByTagName('main')[0];
