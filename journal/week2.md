@@ -110,6 +110,7 @@ HomeFeed.js
 # Implemented rollbar
 <ul>
 <li> Rollbar Imports</li>
+
 ```
 import os
 import rollbar
@@ -118,6 +119,7 @@ from flask import got_request_exception
 from flask import Request
 ```
 <li>Initialising rollbar</li>
+
 ```
 #Implementing rollbar
 rollbar_access_token = os.getenv('ROLLBAR_ACCESS_TOKEN')
@@ -138,6 +140,7 @@ def init_rollbar():
     got_request_exception.connect(rollbar.contrib.flask.report_exception, app)
 ```
 <li>Endpoint to test rollbar</li>
+
 ```
 #Endpoint to test rollbar
 @app.route('/rollbar/test')
@@ -148,6 +151,7 @@ def rollbar_test():
 ![Rollbar traces](../_docs/assets/rollbar-traces.png)
 
 <li>Rolbar with people tracking</li>
+
 ```
 @app.route('/people/track')
 def hello():
@@ -157,5 +161,6 @@ def hello():
     return "Hello World!"
 
 ```
-</ul>
 ![Rollbar Person Traces](../_docs/assets/rollbar-person-trace.png)
+
+</ul>
