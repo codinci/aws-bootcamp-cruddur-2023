@@ -33,6 +33,9 @@ export default function HomeFeedPage() {
       const traceparent = `01-${span.spanContext().traceId}-${span.spanContext().spanId}-025`;
       try {      
         const res = await fetch(backend_url, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`
+          },
           method: "GET",
           traceparent: traceparent,
         });
