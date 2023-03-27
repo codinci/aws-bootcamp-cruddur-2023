@@ -15,21 +15,31 @@ export default function SigninPage() {
   const [password, setPassword] = React.useState('');
   const [errors, setErrors] = React.useState('');
 
-  const onsubmit =  (event) => {
+  const onsubmit =  async (event) => {
     setErrors('')
     event.preventDefault();
-    Auth.signIn(email, password)
-      .then(user => {
-        localStorage.setItem("access_token", user.signInUserSession.accessToken.jwtToken)
-        window.location.href = "/"
-      })
-      .catch (error => {
-        if (error.code == 'UserNotConfirmedException') {
-          window.location.href = "/confirm"
-        }
-        setErrors(error.message)
-      });    
-    return false
+    try {
+      const user = await Auth.signIn(email, password)
+      localStorage.setItem("access_token", user.signInUserSession.accessToken.jwtToken)
+      window.location.href = "/"
+    } catch (error){
+      if (error.code == 'UserNotConfirmedException') {
+        window.location.href = "/confirm"
+      }
+      setErrors(error.message)
+    }; 
+    // Auth.signIn(email, password)
+    //   .then(user => {
+    //     localStorage.setItem("access_token", user.signInUserSession.accessToken.jwtToken)
+    //     window.location.href = "/"
+    //   })
+    //   .catch (error => {
+    //     if (error.code == 'UserNotConfirmedException') {
+    //       window.location.href = "/confirm"
+    //     }
+    //     setErrors(error.message)
+    //   });    
+    // return false
   }
 
   const email_onchange = (event) => {
